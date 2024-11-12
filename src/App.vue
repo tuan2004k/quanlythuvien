@@ -5,7 +5,7 @@
 import router from './router'
 const token = localStorage.getItem('jwt');
 if(token == null){
-  router.push('./QuanLySach')
+  router.push('./Login')
 }
 else router.push('./');
 </script>
