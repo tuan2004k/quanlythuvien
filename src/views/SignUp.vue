@@ -1,13 +1,21 @@
 <template>
   <div>
-
     <v-card
       class="mx-auto pa-12 pb-8"
       elevation="8"
       max-width="448"
       rounded="lg"
     >
-      <div class="text-subtitle-1 text-medium-emphasis">Account</div>
+      <div class="text-subtitle-1 text-medium-emphasis">Create Account</div>
+
+
+      <v-text-field
+        density="compact"
+        placeholder="Full Name"
+        prepend-inner-icon="mdi-account-outline"
+        variant="outlined"
+      ></v-text-field>
+
 
       <v-text-field
         density="compact"
@@ -16,18 +24,10 @@
         variant="outlined"
       ></v-text-field>
 
+
       <div class="text-subtitle-1 text-medium-emphasis d-flex align-center justify-space-between">
         Password
-
-        <a
-          class="text-caption text-decoration-none text-blue"
-          href="#"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          Forgot login password?</a>
       </div>
-
       <v-text-field
         :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
         :type="visible ? 'text' : 'password'"
@@ -38,13 +38,26 @@
         @click:append-inner="visible = !visible"
       ></v-text-field>
 
+
+      <div class="text-subtitle-1 text-medium-emphasis d-flex align-center justify-space-between">
+        Confirm Password
+      </div>
+      <v-text-field
+        :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
+        :type="visible ? 'text' : 'password'"
+        density="compact"
+        placeholder="Confirm your password"
+        prepend-inner-icon="mdi-lock-outline"
+        variant="outlined"
+        @click:append-inner="visible = !visible"
+      ></v-text-field>
+
       <v-card
         class="mb-12"
         color="surface-variant"
         variant="tonal"
-      >
+      ></v-card>
 
-      </v-card>
 
       <v-btn
         class="mb-8"
@@ -52,11 +65,11 @@
         size="large"
         variant="tonal"
         block
-        @click="submitForm"
       >
-        Log In
+        Sign Up
       </v-btn>
 
+      
       <v-card-text class="text-center">
         <a
           class="text-blue text-decoration-none"
@@ -64,7 +77,7 @@
           rel="noopener noreferrer"
           target="_blank"
         >
-          Sign up now <v-icon icon="mdi-chevron-right"></v-icon>
+          Already have an account? Log in <v-icon icon="mdi-chevron-right"></v-icon>
         </a>
       </v-card-text>
     </v-card>
@@ -79,9 +92,8 @@
   }
 </script>
 
-
 <style scoped>
-.v-card{
+.v-card {
   background-color: rgb(232, 232, 232);
   width: 700px;
   margin: 0 auto;
