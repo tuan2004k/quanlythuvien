@@ -1,87 +1,193 @@
 <template>
-  <div>
-  
-    <v-card
-      
-      class="mx-auto pa-12 pb-8"
-      elevation="8"
-      max-width="448"
-      rounded="lg"
-    >
-      <div class="text-subtitle-1 text-medium-emphasis">Account</div>
-
-      <v-text-field
-        density="compact"
-        placeholder="Email address"
-        prepend-inner-icon="mdi-email-outline"
-        variant="outlined"
-      ></v-text-field>
-
-      <div class="text-subtitle-1 text-medium-emphasis d-flex align-center justify-space-between">
-        Password
-
-        <a
-          class="text-caption text-decoration-none text-blue"
-          href="#"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          Forgot login password?</a>
+  <v-sheet class="bg-deep pa-16" rounded>
+    <v-card class="mx-auto px-10 py-12" max-width="500px">
+      <div class="logo-container">
+        <img src="/src/assets/logo/logologin.png" alt="logo">
       </div>
+      <v-form v-model="form" @submit.prevent="submitForm">
+        <v-text-field
+          v-model="email"
+          :readonly="loading"
+          :rules="[required, emailRule]"
+          class="mb-4"
+          label="Email"
+          clearable
+        ></v-text-field>
 
-      <v-text-field
-        :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
-        :type="visible ? 'text' : 'password'"
-        density="compact"
-        placeholder="Enter your password"
-        prepend-inner-icon="mdi-lock-outline"
-        variant="outlined"
-        @click:append-inner="visible = !visible"
-      ></v-text-field>
+        <v-text-field
+          v-model="password"
+          :readonly="loading"
+          :rules="[required]"
+          label="Password"
+          placeholder="Enter your password"
+          type="password"
+          clearable
+        ></v-text-field>
 
-      <v-card
-        class="mb-12"
-        color="surface-variant"
-        variant="tonal"
-      >
-      
-      </v-card>
+        <v-select
+          v-model="role"
+          :items="roles"
+          :rules="[required]"
+          label="Phân quyền người dùng"
+          placeholder="Chọn phân quyền"
+          clearable
+          class="mb-4"
+        ></v-select>
 
-      <v-btn
-        class="mb-8"
-        color="blue"
-        size="large"
-        variant="tonal"
-        block
-      >
-        Log In
-      </v-btn>
-
-      <v-card-text class="text-center">
-        <a
-          class="text-blue text-decoration-none"
-          href="#"
-          rel="noopener noreferrer"
-          target="_blank"
+        <v-btn
+          :disabled="!form || !role"
+          :loading="loading"
+          color="success"
+          size="large"
+          type="submit"
+          variant="elevated"
+          block
         >
-          Sign up now <v-icon icon="mdi-chevron-right"></v-icon>
-        </a>
-      </v-card-text>
+          Login
+        </v-btn>
+
+        <v-btn
+          color="primary"
+          size="small"
+          variant="text"
+          class="sign-in-btn"
+          @click="redirectToSignIn"
+        >
+          Sign In
+        </v-btn>
+
+        <div class="forgot-password-link">
+          <a @click.prevent="openForgotPasswordDialog" href="#">Forgot Password</a>
+        </div>
+      </v-form>
     </v-card>
-  </div>
+
+    <v-dialog v-model="forgotPasswordDialog" max-width="500px">
+      <v-card>
+        <v-card-title>Khôi phục mật khẩu</v-card-title>
+        <v-card-text>
+          <v-text-field
+            v-model="resetEmail"
+            label="Email của bạn"
+            placeholder="Nhập email để nhận liên kết khôi phục"
+            :rules="[required]"
+          ></v-text-field>
+        </v-card-text>
+        <v-card-actions>
+          <v-btn text color="primary" @click="sendResetLink">Gửi</v-btn>
+          <v-btn text color="secondary" @click="closeForgotPasswordDialog">Hủy</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </v-sheet>
 </template>
+
 <script>
-  export default {
-    data: () => ({
-      visible: false,
-    }),
-  }
+import router from '@/router';
+
+export default {
+  data() {
+    return {
+      form: false,
+      email: '',
+      password: '',
+      role: '',
+      loading: false,
+      forgotPasswordDialog: false,  // Đảm bảo trạng thái dialog này là boolean
+      resetEmail: '',
+      roles: ['Độc giả', 'Thủ thư', 'Quản trị viên'],
+    };
+  },
+
+  methods: {
+    submitForm() {
+      const savedUser = JSON.parse(localStorage.getItem('newUser'));
+      if (!savedUser) {
+        alert("Chưa có tài khoản đã đăng ký!");
+        return;
+      }
+
+      if (this.email === savedUser.email && this.password === savedUser.password) {
+        alert("Đăng nhập thành công!");
+        router.push('/');
+      } else {
+        alert("Email hoặc mật khẩu không chính xác.");
+      }
+    },
+
+    openForgotPasswordDialog() {
+      this.forgotPasswordDialog = true;  // Thay đổi trạng thái để hiển thị dialog
+    },
+
+    closeForgotPasswordDialog() {
+      this.forgotPasswordDialog = false;  // Đóng dialog khi nhấn "Hủy"
+    },
+
+    sendResetLink() {
+      if (this.resetEmail) {
+        console.log('Sending reset link to:', this.resetEmail);
+        this.closeForgotPasswordDialog();
+        alert("Liên kết khôi phục đã được gửi. Vui lòng kiểm tra email của bạn.");
+      }
+      router.push('/Resetpass');
+    },
+
+    redirectToSignIn() {
+      router.push('/register');
+    },
+
+    required(v) {
+      return !!v || 'Field is required';
+    },
+
+    emailRule(v) {
+      const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+      return emailPattern.test(v) || 'Email không hợp lệ';
+    },
+  },
+};
 </script>
+
 <style scoped>
-.v-card{
-  background-color: rgb(232, 232, 232); 
-  width: 700px; 
-  margin: 0 auto; 
-  padding: 0; 
+.v-sheet {
+  width: 500px;
+}
+
+.v-card {
+  max-width: 600px;
+}
+
+.logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+img {
+  max-width: 100px;
+}
+
+.sign-in-btn {
+  margin-top: 10px;
+}
+
+.forgot-password-link {
+  text-align: center;
+  margin-top: 8px;
+}
+
+.forgot-password-link a {
+  color: #1976D2;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.sign-in-btn {
+  display: flex;
+  justify-content: center;
+  margin: 10px auto 0;
+  width: fit-content;
+  background: #03f8bf;
 }
 </style>
