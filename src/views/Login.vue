@@ -98,12 +98,12 @@ export default {
       password: "",
       role: "",
       loading: false,
-      forgotPasswordDialog: false, 
+      forgotPasswordDialog: false,
       resetEmail: "",
       roles: ["Độc giả", "Thủ thư", "Quản trị viên"],
     };
   },
-
+  console.log("Test")
   methods: {
     submitForm() {
       const savedUser = JSON.parse(localStorage.getItem("newUser"));
@@ -162,7 +162,7 @@ export default {
 html, body {
   margin: 0;
   padding: 0;
-  height: 100%; 
+  height: 100%;
   width: 100%;
 }
 
@@ -170,15 +170,15 @@ html, body {
   width: 100%;
   min-height: 100vh;
   display: flex;
-  justify-content: center; 
-  align-items: center; 
+  justify-content: center;
+  align-items: center;
   padding: 0;
   background-color: transparent;
 }
 
 .v-card {
   max-width: 500px;
-  width: 100%; 
+  width: 100%;
 }
 
 .logo-container {
