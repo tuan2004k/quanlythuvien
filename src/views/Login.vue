@@ -104,7 +104,6 @@ export default {
     };
   },
   console.log("Test")
-  console.log("Tesst2")
   methods: {
     submitForm() {
       const savedUser = JSON.parse(localStorage.getItem("newUser"));
