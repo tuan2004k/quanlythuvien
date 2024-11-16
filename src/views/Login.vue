@@ -103,7 +103,6 @@ export default {
       roles: ["Độc giả", "Thủ thư", "Quản trị viên"],
     };
   },
-  console.log("Test")
   methods: {
     submitForm() {
       const savedUser = JSON.parse(localStorage.getItem("newUser"));
