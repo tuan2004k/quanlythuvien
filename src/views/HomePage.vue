@@ -1,42 +1,38 @@
 <template>
-  <div class="header">
-    <v-toolbar prominent class="full-width">
-      <div>
-        <img src="/src/assets/logo/logologin.png" alt="" />
-      </div>
+  <div>
+    <!-- Thanh menu -->
+    <div class="header">
+      <v-toolbar prominent class="full-width">
+        <div>
+          <img src="/src/assets/logo/logologin.png" alt="" />
+        </div>
 
-      <v-toolbar-title>Quản Lý Thư Viện</v-toolbar-title>
+        <v-toolbar-title>Quản Lý Thư Viện</v-toolbar-title>
 
-      <!-- Thanh tìm kiếm -->
-      <v-spacer></v-spacer>
-      <v-text-field
-        v-model="searchQuery"
-        label="Tìm kiếm"
-        prepend-inner-icon="mdi-magnify"
-        class="search-bar"
-        clearable
-        hide-details
-        dense
-        solo
-      ></v-text-field>
+        <!-- Sử dụng <router-link> thay vì @click -->
+        <router-link
+          v-for="(item, index) in items"
+          :key="index"
+          :to="item.to"
+          class="menu-item"
+        >
+          <v-btn text>
+            <v-icon left>{{ item.icon }}</v-icon>
+            {{ item.title }}
+          </v-btn>
+        </router-link>
 
-      <v-btn
-        v-for="(item, index) in items"
-        :key="index"
-        @click="handleItemClick(item)"
-        text
-        class="menu-item"
-      >
-        <v-icon left>{{ item.icon }}</v-icon>
-        {{ item.title }}
-      </v-btn>
+        <v-btn icon @click="handleExportClick">
+          <v-icon>mdi-account</v-icon>
+        </v-btn>
+      </v-toolbar>
+    </div>
 
-      <v-btn icon @click="handleExportClick">
-        <v-icon>mdi-export</v-icon>
-      </v-btn>
-    </v-toolbar>
+    <!-- Nội dung động (hiển thị các component tùy theo route) -->
+    <div class="content">
+      <router-view></router-view> <!-- Đây là nơi các trang con sẽ được hiển thị -->
+    </div>
   </div>
-  
 </template>
 
 <script>
@@ -44,28 +40,17 @@ export default {
   data() {
     return {
       items: [
-        { title: 'Quản lý sách', icon: 'mdi-book' },
-        { title: 'Mượn sách', icon: 'mdi-library' },
-        { title: 'Cài đặt', icon: 'mdi-settings' },
+        { title: "Tra cứu & Tìm kiếm", icon: "mdi-magnify", to: "/tra-cuu-tim-kiem" },
+        { title: "Quản lý sách", icon: "mdi-book", to: "/quanlysach" },
+        { title: "Mượn sách", icon: "mdi-library", to: "/muon-sach" },
+        { title: "Tài liệu điện tử", icon: "mdi-file", to: "/tai-lieu-dien-tu" },
       ],
-      searchQuery: '', 
     };
   },
   methods: {
-    handleItemClick(item) {
-      console.log('Item clicked:', item.title);
-      if (item.title === 'Quản lý sách') {
-        this.$router.push('/quanlysach');
-      } else if (item.title === 'Mượn sách') {
-        this.$router.push('/muon-sach');
-      } else if (item.title === 'Cài đặt') {
-        this.$router.push('/cai-dat');
-      }
-    },
     handleExportClick() {
-      console.log('Export clicked!');
-
-    }
+      console.log("Export clicked!");
+    },
   },
 };
 </script>
@@ -87,25 +72,26 @@ export default {
 
 body {
   padding-top: 64px;
-
 }
-
 
 .search-bar {
-  width: 400px; 
-  margin: 0 auto; 
+  width: 400px;
+  margin: 0 auto;
   border-radius: 50px;
-  margin-right: 50px; 
+  margin-right: 50px;
 }
-
 
 .menu-item {
-  margin-left: 16px; 
+  margin-left: 16px;
 }
-
 
 img {
   width: 50px;
   margin: 30px;
+}
+
+.content {
+  margin-top: 120px;
+  padding: 20px;
 }
 </style>

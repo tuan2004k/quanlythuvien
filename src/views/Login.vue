@@ -2,7 +2,7 @@
   <v-sheet class="bg-deep pa-16" rounded>
     <v-card class="mx-auto px-10 py-12" max-width="500px">
       <div class="logo-container">
-        <img src="/src/assets/logo/logologin.png" alt="logo">
+        <img src="/src/assets/logo/logologin.png" alt="logo" />
       </div>
       <v-form v-model="form" @submit.prevent="submitForm">
         <v-text-field
@@ -42,6 +42,7 @@
           type="submit"
           variant="elevated"
           block
+          @click="redirectToLogin"
         >
           Login
         </v-btn>
@@ -57,7 +58,9 @@
         </v-btn>
 
         <div class="forgot-password-link">
-          <a @click.prevent="openForgotPasswordDialog" href="#">Forgot Password</a>
+          <a @click.prevent="openForgotPasswordDialog" href="#"
+            >Forgot Password</a
+          >
         </div>
       </v-form>
     </v-card>
@@ -75,7 +78,9 @@
         </v-card-text>
         <v-card-actions>
           <v-btn text color="primary" @click="sendResetLink">Gửi</v-btn>
-          <v-btn text color="secondary" @click="closeForgotPasswordDialog">Hủy</v-btn>
+          <v-btn text color="secondary" @click="closeForgotPasswordDialog"
+            >Hủy</v-btn
+          >
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -83,78 +88,97 @@
 </template>
 
 <script>
-import router from '@/router';
+import router from "@/router";
 
 export default {
   data() {
     return {
       form: false,
-      email: '',
-      password: '',
-      role: '',
+      email: "",
+      password: "",
+      role: "",
       loading: false,
-      forgotPasswordDialog: false,  // Đảm bảo trạng thái dialog này là boolean
-      resetEmail: '',
-      roles: ['Độc giả', 'Thủ thư', 'Quản trị viên'],
+      forgotPasswordDialog: false, 
+      resetEmail: "",
+      roles: ["Độc giả", "Thủ thư", "Quản trị viên"],
     };
   },
 
   methods: {
     submitForm() {
-      const savedUser = JSON.parse(localStorage.getItem('newUser'));
+      const savedUser = JSON.parse(localStorage.getItem("newUser"));
       if (!savedUser) {
         alert("Chưa có tài khoản đã đăng ký!");
         return;
       }
 
-      if (this.email === savedUser.email && this.password === savedUser.password) {
+      if (
+        this.email === savedUser.email &&
+        this.password === savedUser.password
+      ) {
         alert("Đăng nhập thành công!");
-        router.push('/');
+        router.push("/");
       } else {
         alert("Email hoặc mật khẩu không chính xác.");
       }
     },
-
     openForgotPasswordDialog() {
-      this.forgotPasswordDialog = true;  // Thay đổi trạng thái để hiển thị dialog
+      this.forgotPasswordDialog = true;
     },
 
     closeForgotPasswordDialog() {
-      this.forgotPasswordDialog = false;  // Đóng dialog khi nhấn "Hủy"
+      this.forgotPasswordDialog = false;
     },
 
     sendResetLink() {
       if (this.resetEmail) {
-        console.log('Sending reset link to:', this.resetEmail);
+        console.log("Sending reset link to:", this.resetEmail);
         this.closeForgotPasswordDialog();
-        alert("Liên kết khôi phục đã được gửi. Vui lòng kiểm tra email của bạn.");
+        alert(
+          "Liên kết khôi phục đã được gửi. Vui lòng kiểm tra email của bạn."
+        );
       }
-      router.push('/Resetpass');
+      router.push("/Resetpass");
     },
 
     redirectToSignIn() {
-      router.push('/register');
+      router.push("/register");
     },
 
     required(v) {
-      return !!v || 'Field is required';
+      return !!v || "Field is required";
     },
 
     emailRule(v) {
       const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-      return emailPattern.test(v) || 'Email không hợp lệ';
+      return emailPattern.test(v) || "Email không hợp lệ";
     },
   },
 };
 </script>
 
 <style scoped>
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%; 
+  width: 100%;
+}
+
 .v-sheet {
-  width: 500px;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center; 
+  align-items: center; 
+  padding: 0;
+  background-color: transparent;
 }
 
 .v-card {
-  max-width: 600px;
+  max-width: 500px;
+  width: 100%; 
 }
 
 .logo-container {
@@ -178,7 +202,7 @@ img {
 }
 
 .forgot-password-link a {
-  color: #1976D2;
+  color: #1976d2;
   cursor: pointer;
   text-decoration: underline;
 }
@@ -191,3 +215,4 @@ img {
   background: #03f8bf;
 }
 </style>
+

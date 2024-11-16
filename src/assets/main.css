@@ -1,16 +1,17 @@
 @import './base.css';
 
 #app {
-  max-width: 1280px;
-  margin: 0 auto;
+  max-width: 2220px; 
+  margin: 0 auto; 
   padding: 2rem;
   font-weight: normal;
+  width: 100%; 
 }
 
 a,
 .green {
   text-decoration: none;
-  color: hsla(160, 100%, 37%, 1);
+  color: rgb(0, 0, 0);
   transition: 0.4s;
   padding: 3px;
 }
@@ -21,15 +22,30 @@ a,
   }
 }
 
+
 @media (min-width: 1024px) {
   body {
     display: flex;
-    place-items: center;
-   
+    justify-content: center; 
+    background: #ccc9c9;
+    margin: 0; 
+    padding: 0; 
   }
 
   #app {
-  
- 
+    width: 100%; 
+    max-width: 2220px; 
+  }
+}
+
+
+@media (max-width: 1024px) {
+  body {
+    background: #ccc9c9; 
+    display: block; 
+  }
+
+  #app {
+    padding: 1rem; 
   }
 }
