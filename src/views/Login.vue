@@ -57,12 +57,32 @@
         </v-btn>
 
         <div class="forgot-password-link">
-          <a @click.prevent="openForgotPasswordDialog" href="#"
+          <a @click.prevent="openForgotPasswordDialog" href=""
             >Forgot Password</a
           >
         </div>
       </v-form>
     </v-card>
+    <v-dialog v-model="forgotPasswordDialog" max-width="400px">
+      <v-card>
+        <v-card-title class="text-h5"> Khôi phục mật khẩu </v-card-title>
+        <v-card-text>
+          <v-text-field
+            v-model="resetEmail"
+            label="Email"
+            placeholder="Nhập email để khôi phục mật khẩu"
+            :rules="[required, emailRule]"
+            clearable
+          ></v-text-field>
+        </v-card-text>
+        <v-card-actions>
+          <v-btn text @click="closeForgotPasswordDialog">Hủy</v-btn>
+          <v-btn color="primary" text @click="sendResetLink"
+            >Gửi liên kết</v-btn
+          >
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
 
     <!-- Nút phân quyền -->
     <div v-if="userRole" class="role-buttons mt-4">
@@ -89,25 +109,9 @@
       </v-btn>
     </div>
   </v-sheet>
-  <v-btn
-    v-if="userRole === 'Độc giả'"
-    color="primary"
-    
-  >
-    Tra cứu sách
-  </v-btn>
-  <v-btn
-    v-if="userRole === 'Thủ thư'"
-    color="success"
-    
-  >
-    Quản lý sách
-  </v-btn>
-  <v-btn
-    v-if="userRole === 'Quản trị viên'"
-    color="error"
-    
-  >
+  <v-btn v-if="userRole === 'Độc giả'" color="primary"> Tra cứu sách </v-btn>
+  <v-btn v-if="userRole === 'Thủ thư'" color="success"> Quản lý sách </v-btn>
+  <v-btn v-if="userRole === 'Quản trị viên'" color="error">
     Quản lý hệ thống
   </v-btn>
 </template>
@@ -128,7 +132,7 @@ export default {
       roles: ["Độc giả", "Thủ thư", "Quản trị viên"],
     };
   },
-  
+
   methods: {
     submitForm() {
       const savedUser = JSON.parse(localStorage.getItem("newUser"));
@@ -166,19 +170,24 @@ export default {
       this.forgotPasswordDialog = true;
     },
 
+    // Đóng dialog
     closeForgotPasswordDialog() {
       this.forgotPasswordDialog = false;
     },
 
+    // Gửi liên kết reset mật khẩu
     sendResetLink() {
       if (this.resetEmail) {
         console.log("Sending reset link to:", this.resetEmail);
-        this.closeForgotPasswordDialog();
+        this.closeForgotPasswordDialog(); // Đóng dialog sau khi gửi
         alert(
-          "Liên kết khôi phục đã được gửi. Vui lòng kiểm tra email của bạn."
+          "Liên kết khôi phục mật khẩu đã được gửi. Vui lòng kiểm tra email của bạn."
         );
+        this.$router.push("/Resetpass")
+      } else {
+        alert("Vui lòng nhập email hợp lệ.");
       }
-      router.push("/Resetpass");
+      
     },
 
     redirectToSignIn() {
