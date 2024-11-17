@@ -8,6 +8,17 @@
         </div>
 
         <v-toolbar-title>Quản Lý Thư Viện</v-toolbar-title>
+        <router-link
+          v-for="(item, index) in filteredItems"
+          :key="index"
+          :to="item.to"
+          class="menu-item"
+        >
+          <v-btn text>
+            <v-icon left>{{ item.icon }}</v-icon>
+            {{ item.title }}
+          </v-btn>
+        </router-link>
 
         <!-- Sử dụng <router-link> thay vì @click -->
         <router-link
@@ -30,7 +41,8 @@
 
     <!-- Nội dung động (hiển thị các component tùy theo route) -->
     <div class="content">
-      <router-view></router-view> <!-- Đây là nơi các trang con sẽ được hiển thị -->
+      <router-view></router-view>
+      <!-- Đây là nơi các trang con sẽ được hiển thị -->
     </div>
   </div>
 </template>
@@ -40,12 +52,24 @@ export default {
   data() {
     return {
       items: [
-        { title: "Tra cứu & Tìm kiếm", icon: "mdi-magnify", to: "/tra-cuu-tim-kiem" },
-        { title: "Quản lý sách", icon: "mdi-book", to: "/quanlysach" },
+        {
+          title: "Tra cứu & Tìm kiếm",
+          icon: "mdi-magnify",
+          to: "/tra-cuu-tim-kiem",
+        },
         { title: "Mượn sách", icon: "mdi-library", to: "/muon-sach" },
-        { title: "Tài liệu điện tử", icon: "mdi-file", to: "/tai-lieu-dien-tu" },
+        {
+          title: "Tài liệu điện tử",
+          icon: "mdi-file",
+          to: "/tai-lieu-dien-tu",
+        },
       ],
+      userRole: null, // Lưu vai trò người dùng
     };
+  },
+  created() {
+    // Lấy vai trò người dùng từ localStorage
+    this.userRole = localStorage.getItem("userRole");
   },
   methods: {
     handleExportClick() {

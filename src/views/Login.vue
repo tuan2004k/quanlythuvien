@@ -42,7 +42,6 @@
           type="submit"
           variant="elevated"
           block
-          @click="redirectToLogin"
         >
           Login
         </v-btn>
@@ -65,26 +64,52 @@
       </v-form>
     </v-card>
 
-    <v-dialog v-model="forgotPasswordDialog" max-width="500px">
-      <v-card>
-        <v-card-title>Khôi phục mật khẩu</v-card-title>
-        <v-card-text>
-          <v-text-field
-            v-model="resetEmail"
-            label="Email của bạn"
-            placeholder="Nhập email để nhận liên kết khôi phục"
-            :rules="[required]"
-          ></v-text-field>
-        </v-card-text>
-        <v-card-actions>
-          <v-btn text color="primary" @click="sendResetLink">Gửi</v-btn>
-          <v-btn text color="secondary" @click="closeForgotPasswordDialog"
-            >Hủy</v-btn
-          >
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+    <!-- Nút phân quyền -->
+    <div v-if="userRole" class="role-buttons mt-4">
+      <v-btn
+        v-if="userRole === 'Độc giả'"
+        color="primary"
+        @click="router.push('/search')"
+      >
+        Tra cứu sách
+      </v-btn>
+      <v-btn
+        v-if="userRole === 'Thủ thư'"
+        color="success"
+        @click="router.push('/manage')"
+      >
+        Quản lý sách
+      </v-btn>
+      <v-btn
+        v-if="userRole === 'Quản trị viên'"
+        color="error"
+        @click="router.push('/admin')"
+      >
+        Quản lý hệ thống
+      </v-btn>
+    </div>
   </v-sheet>
+  <v-btn
+    v-if="userRole === 'Độc giả'"
+    color="primary"
+    
+  >
+    Tra cứu sách
+  </v-btn>
+  <v-btn
+    v-if="userRole === 'Thủ thư'"
+    color="success"
+    
+  >
+    Quản lý sách
+  </v-btn>
+  <v-btn
+    v-if="userRole === 'Quản trị viên'"
+    color="error"
+    
+  >
+    Quản lý hệ thống
+  </v-btn>
 </template>
 
 <script>
@@ -113,12 +138,27 @@ export default {
 
       if (
         this.email === savedUser.email &&
-        this.password === savedUser.password
+        this.password === savedUser.password &&
+        this.role === savedUser.role
       ) {
         alert("Đăng nhập thành công!");
-        router.push("/");
+
+        // Lưu vai trò vào localStorage
+        localStorage.setItem("userRole", this.role);
+
+        // Gán giá trị cho userRole để hiển thị nút
+        this.userRole = this.role;
+
+        // Điều hướng dựa trên vai trò
+        if (this.role === "Độc giả") {
+          router.push("/docgia");
+        } else if (this.role === "Thủ thư") {
+          router.push("/admin");
+        } else if (this.role === "Quản trị viên") {
+          router.push("/admin");
+        }
       } else {
-        alert("Email hoặc mật khẩu không chính xác.");
+        alert("Email, mật khẩu hoặc vai trò không chính xác.");
       }
     },
     openForgotPasswordDialog() {
@@ -157,8 +197,8 @@ export default {
 </script>
 
 <style scoped>
-
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
   height: 100%;
