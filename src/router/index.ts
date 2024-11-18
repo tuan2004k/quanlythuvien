@@ -5,6 +5,7 @@ import QuanLySach from '@/components/QuanLySach.vue';
 import TraCuuSach from '@/components/TraCuuSach.vue';
 import ThuThu from '@/views/Admin.vue';
 import HomePage from '../views/DocGia.vue';
+import TimKiem from '../components/TimKiem.vue';
 
 
 const router = createRouter({
@@ -20,7 +21,7 @@ const router = createRouter({
         { path: 'quanlysach', component: QuanLySach }, // Trang con: Quản lý sách
       ],
     },
-    
+
     {
       path: '/login',
       name: 'Login',
@@ -51,8 +52,11 @@ const router = createRouter({
       name: 'QuanLySach',
       component: () => import('../components/QuanLySach.vue'),
     },
-    
-  
+    {
+      path: '/timkiem',
+      name: 'timkiem',
+      component: () => import('../components/TimKiem.vue'),
+    },
   ],
 });
 
