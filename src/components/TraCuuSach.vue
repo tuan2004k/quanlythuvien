@@ -11,7 +11,7 @@
             class="mb-4"
             clearable
           ></v-text-field>
-  
+
           <v-text-field
             v-model="confirmPassword"
             :rules="[required, matchPassword]"
@@ -20,7 +20,7 @@
             class="mb-4"
             clearable
           ></v-text-field>
-  
+
           <v-btn
             :disabled="!form"
             color="success"
@@ -36,7 +36,7 @@
       </v-card>
     </v-sheet>
   </template>
-    
+
     <script>
   export default {
     data() {
@@ -67,7 +67,7 @@
     },
   };
   </script>
-    
+
   <style scoped>
   /* Căn giữa toàn bộ giao diện */
   .v-sheet {
@@ -78,16 +78,15 @@
     padding: 0;
     background: transparent;
   }
-  
+
   .v-card {
     width: 100%;
     max-width: 500px; /* Giới hạn chiều rộng của v-card */
     padding: 16px;
   }
-  
+
   .resetpass {
     margin-top: 20px;
   }
   </style>
-  
-    
+
