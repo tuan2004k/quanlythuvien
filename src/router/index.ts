@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '../views/HomePage.vue';
 import ResetPass from '@/components/ResetPass.vue';
 import QuanLySach from '@/components/QuanLySach.vue';
-
+import Themxoa from '@/components/Themxoa.vue';
 
 
 const router = createRouter({
@@ -32,6 +32,11 @@ const router = createRouter({
       path: '/Quanlysach',
       name: 'QuanLySach',
       component: () => import('../components/QuanLySach.vue'),
+    },
+    {
+      path: '/Themxoa',
+      name: 'Themxoa',
+      component: () => import('../components/Themxoa.vue'),
     },
     
   
