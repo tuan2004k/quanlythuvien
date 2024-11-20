@@ -6,6 +6,7 @@ import TraCuuSach from '@/components/TraCuuSach.vue';
 import ThuThu from '@/views/Admin.vue';
 import HomePage from '../views/DocGia.vue';
 import TimKiem from '../components/TimKiem.vue';
+import TaiTaiLieu from '@/components/TaiTaiLieu.vue';
 
 
 const router = createRouter({
@@ -56,6 +57,11 @@ const router = createRouter({
       path: '/timkiem',
       name: 'timkiem',
       component: () => import('../components/TimKiem.vue'),
+    },
+    {
+      path: '/taitailieu',
+      name: 'taitailieu',
+      component: () => import('../components/TaiTaiLieu.vue'),
     },
   ],
 });

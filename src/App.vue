@@ -5,7 +5,7 @@
 import router from './router'
 const token = localStorage.getItem('jwt');
 if(token == null){
-  router.push('./TimKiem')
+  router.push('./TaiTaiLieu')
 }
 else router.push('./');
 </script>
