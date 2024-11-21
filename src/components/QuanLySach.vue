@@ -1,5 +1,13 @@
   <template>
   <v-container fluid>
+    <v-text-field
+      v-model="searchQuery"
+      label="Tìm Kiếm Sách"
+      prepend-icon="mdi-magnify"
+      outlined
+      dense
+      class="mb-4 search-bar"
+    />
     <v-row justify="center" class="relative-container">
       <v-col>
         <!-- Nút Thêm Sách -->
@@ -108,16 +116,16 @@
   </v-container>
 </template>
 
-  <script lang="ts">
-import { defineComponent, reactive, ref, computed } from "vue";
+<script lang="ts">
+import { defineComponent, reactive, ref, computed, onMounted } from "vue";
 
 export default defineComponent({
   name: "BookManagement",
   setup() {
-    const books = reactive<any[]>([]); 
-    const dialog = ref(false); 
-    const snackbarVisible = ref(false); 
-    const snackbarMessage = ref(""); 
+    const books = reactive<any[]>([]);
+    const dialog = ref(false);
+    const snackbarVisible = ref(false);
+    const snackbarMessage = ref("");
     const headers = ref([
       { text: "Tên Sách", value: "title", align: "center" },
       { text: "Tác Giả", value: "author", align: "center" },
@@ -147,11 +155,30 @@ export default defineComponent({
       { text: "Cũ", value: "old" },
     ];
 
-    const filterStatus = ref('text'); // Trạng thái lọc sách
+    const filterStatus = ref("text"); // Trạng thái lọc sách
+    const searchQuery = ref(""); // Giá trị tìm kiếm
 
     const filteredBooks = computed(() => {
-      if (!filterStatus.value) return books;
-      return books.filter((book) => book.status === filterStatus.value);
+      return books.filter((book) => {
+        const matchesSearch = searchQuery.value
+          ? book.title.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
+            book.author.toLowerCase().includes(searchQuery.value.toLowerCase())
+          : true;
+
+        const matchesStatus = filterStatus.value
+          ? book.status === filterStatus.value
+          : true;
+
+        return matchesSearch && matchesStatus;
+      });
+    });
+
+    // Load books from localStorage when component is mounted
+    onMounted(() => {
+      const storedBooks = localStorage.getItem("books");
+      if (storedBooks) {
+        books.push(...JSON.parse(storedBooks));
+      }
     });
 
     const addBook = () => {
@@ -177,6 +204,8 @@ export default defineComponent({
       const index = books.findIndex((b) => b.id === book.id);
       if (index !== -1) {
         books.splice(index, 1);
+        // Update localStorage after deleting
+        localStorage.setItem("books", JSON.stringify(books));
         snackbarMessage.value = "Xóa sách thành công!";
         snackbarVisible.value = true;
       }
@@ -198,6 +227,9 @@ export default defineComponent({
         });
         snackbarMessage.value = "Thêm sách thành công!";
       }
+
+      // Save books to localStorage after adding or editing
+      localStorage.setItem("books", JSON.stringify(books));
 
       currentBook.value = {
         title: "",
@@ -224,6 +256,7 @@ export default defineComponent({
       statusOptions,
       typeOptions,
       filterStatus,
+      searchQuery,
       filteredBooks,
       addBook,
       editBook,
@@ -233,6 +266,7 @@ export default defineComponent({
   },
 });
 </script>
+
 
   <style scoped>
 .relative-container {
@@ -296,4 +330,19 @@ export default defineComponent({
   height: 40px;
   border-radius: 5px;
 }
+.search-bar {
+  background-color: #ffffff; /* Màu nền mong muốn */
+  border-radius: 5px; /* Làm mượt các góc */
+  color: black;
+}
+
+.search-bar .v-input__control {
+  background-color: inherit; /* Áp dụng màu nền từ lớp cha */
+  color: #333; /* Màu chữ (tùy chọn) */
+}
+.v-text-field{}
+
+
+
+
 </style>

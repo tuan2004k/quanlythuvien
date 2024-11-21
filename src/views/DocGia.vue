@@ -33,11 +33,23 @@
           </v-btn>
         </router-link>
 
-        <v-btn icon @click="handleExportClick">
+        <v-btn icon @click="openLogoutDialog">
           <v-icon>mdi-account</v-icon>
         </v-btn>
       </v-toolbar>
     </div>
+    <v-dialog v-model="logoutDialog" max-width="400px">
+      <v-card>
+        <v-card-title class="headline">Xác nhận đăng xuất</v-card-title>
+        <v-card-text>
+          Bạn có chắc chắn muốn đăng xuất khỏi tài khoản không?
+        </v-card-text>
+        <v-card-actions>
+          <v-btn text @click="logoutDialog = false">Hủy</v-btn>
+          <v-btn text color="red" @click="logout">Đăng xuất</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
 
     <!-- Nội dung động (hiển thị các component tùy theo route) -->
     <div class="content">
@@ -57,26 +69,35 @@ export default {
           icon: "mdi-magnify",
           to: "/tra-cuu-tim-kiem",
         },
-        { title: "Mượn sách", icon: "mdi-library", to: "/muon-sach" },
+
+        { title: "Mượn sách", icon: "mdi-library", to: "/muonsach" },
         {
           title: "Tài liệu điện tử",
           icon: "mdi-file",
           to: "/tai-lieu-dien-tu",
         },
       ],
-      userRole: null, // Lưu vai trò người dùng
+      userRole: null,
+      logoutDialog: false, 
     };
   },
   created() {
-    // Lấy vai trò người dùng từ localStorage
     this.userRole = localStorage.getItem("userRole");
   },
   methods: {
-    handleExportClick() {
-      console.log("Export clicked!");
+    openLogoutDialog() {
+      this.logoutDialog = true;
+    },
+    logout() {
+      localStorage.removeItem("loggedInAccount");
+      localStorage.removeItem("userRole");
+      this.logoutDialog = false;
+      this.$router.push("/login"); // Chuyển hướng về trang đăng nhập
+      alert("Đăng xuất thành công!");
     },
   },
 };
+
 </script>
 
 <style scoped>

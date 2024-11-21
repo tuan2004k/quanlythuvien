@@ -1,6 +1,5 @@
 <template>
   <div>
-    <!-- Thanh menu -->
     <div class="header">
       <v-toolbar prominent class="full-width">
         <div>
@@ -20,7 +19,6 @@
           </v-btn>
         </router-link>
 
-        <!-- Sử dụng <router-link> thay vì @click -->
         <router-link
           v-for="(item, index) in items"
           :key="index"
@@ -58,47 +56,32 @@
 </template>
   
 <script>
-
-
 export default {
   data() {
     return {
       items: [
-        {
-          title: "Tra cứu & Tìm kiếm",
-          icon: "mdi-magnify",
-          to: "/tra-cuu-tim-kiem",
-        },
+        { title: "Tra cứu & Tìm kiếm", icon: "mdi-magnify", to: "/tra-cuu-tim-kiem" },
         { title: "Quản lý sách", icon: "mdi-book", to: "/Quanlysach" },
         { title: "Mượn sách", icon: "mdi-library", to: "/muonsach" },
-        {
-          title: "Tài liệu điện tử",
-          icon: "mdi-file",
-          to: "/tai-lieu-dien-tu",
-        },
+        { title: "Tài liệu điện tử", icon: "mdi-file", to: "/tai-lieu-dien-tu" },
       ],
       userRole: null,
-      logoutDialog: false, // Kiểm tra trạng thái dialog đăng xuất
+      logoutDialog: false, 
     };
   },
-
   created() {
-    // Lấy vai trò người dùng từ localStorage
     this.userRole = localStorage.getItem("userRole");
   },
   methods: {
     openLogoutDialog() {
-      // Mở dialog khi nhấn vào icon đăng xuất
       this.logoutDialog = true;
     },
     logout() {
-      // Xóa thông tin đăng nhập khỏi localStorage
+
       localStorage.removeItem("loggedInAccount");
       localStorage.removeItem("userRole");
-
-      // Đóng dialog và thực hiện hành động đăng xuất (ví dụ: chuyển hướng về trang đăng nhập)
       this.logoutDialog = false;
-      this.$router.push("/login"); // Chuyển hướng về trang đăng nhập
+      this.$router.push("/login"); 
       alert("Đăng xuất thành công!");
     },
   },

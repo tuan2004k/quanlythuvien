@@ -1,5 +1,5 @@
 <template>
-  <v-sheet class="bg-deep pa-16" rounded>
+  <v-sheet class="" rounded>
     <v-card class="mx-auto px-10 py-12" max-width="500px">
       <v-card-title>Đặt Lại Mật Khẩu</v-card-title>
       <v-form v-model="form" @submit.prevent="resetPassword">
@@ -69,19 +69,18 @@ export default {
 </script>
   
 <style scoped>
-/* Căn giữa toàn bộ giao diện */
 .v-sheet {
   display: flex;
-  justify-content: center; /* Căn giữa theo chiều ngang */
-  align-items: center; /* Căn giữa theo chiều dọc */
-  min-height: 100vh; /* Chiều cao tối thiểu để phủ hết màn hình */
+  justify-content: center;
+  align-items: center; 
+  min-height: 100vh; 
   padding: 0;
   background: transparent;
 }
 
 .v-card {
   width: 100%;
-  max-width: 500px; /* Giới hạn chiều rộng của v-card */
+  max-width: 500px; 
   padding: 16px;
 }
 

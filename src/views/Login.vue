@@ -1,5 +1,5 @@
 <template>
-  <v-sheet class="bg-deep pa-16" rounded>
+  <v-sheet class="" rounded>
     <v-card class="mx-auto px-10 py-12" max-width="500px">
       <div class="logo-container">
         <img src="/src/assets/logo/logologin.png" alt="logo" />
@@ -57,12 +57,13 @@
         </v-btn>
 
         <div class="forgot-password-link">
-          <a @click.prevent="openForgotPasswordDialog" href=""
+          <a @click.prevent="openForgotPasswordDialog" href="#"
             >Forgot Password</a
           >
         </div>
       </v-form>
     </v-card>
+
     <v-dialog v-model="forgotPasswordDialog" max-width="400px">
       <v-card>
         <v-card-title class="text-h5"> Khôi phục mật khẩu </v-card-title>
@@ -83,37 +84,10 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-
-    <!-- Nút phân quyền -->
-    <div v-if="userRole" class="role-buttons mt-4">
-      <v-btn
-        v-if="userRole === 'Độc giả'"
-        color="primary"
-        @click="router.push('/search')"
-      >
-        Tra cứu sách
-      </v-btn>
-      <v-btn
-        v-if="userRole === 'Thủ thư'"
-        color="success"
-        @click="router.push('/manage')"
-      >
-        Quản lý sách
-      </v-btn>
-      <v-btn
-        v-if="userRole === 'Quản trị viên'"
-        color="error"
-        @click="router.push('/admin')"
-      >
-        Quản lý hệ thống
-      </v-btn>
-    </div>
   </v-sheet>
-  <v-btn v-if="userRole === 'Độc giả'" color="primary"> Tra cứu sách </v-btn>
-  <v-btn v-if="userRole === 'Thủ thư'" color="success"> Quản lý sách </v-btn>
-  <v-btn v-if="userRole === 'Quản trị viên'" color="error">
-    Quản lý hệ thống
-  </v-btn>
+
+  <!-- Role-based buttons -->
+
 </template>
 
 <script>
@@ -129,65 +103,73 @@ export default {
       loading: false,
       forgotPasswordDialog: false,
       resetEmail: "",
-      roles: ["Độc giả", "Thủ thư", "Quản trị viên"],
+      roles: ["Độc giả", "Quản trị viên"],
+      userRole: "",
     };
   },
-
+  mounted() {
+    // Retrieve user role from localStorage if available
+    const storedRole = localStorage.getItem("userRole");
+    if (storedRole) {
+      this.userRole = storedRole;
+    }
+  },
   methods: {
     submitForm() {
-      const savedUser = JSON.parse(localStorage.getItem("newUser"));
-      if (!savedUser) {
-        alert("Chưa có tài khoản đã đăng ký!");
-        return;
-      }
+      // Lấy tài khoản đã lưu trong localStorage
+      const accounts = JSON.parse(localStorage.getItem("accounts")) || [];
 
-      if (
-        this.email === savedUser.email &&
-        this.password === savedUser.password &&
-        this.role === savedUser.role
-      ) {
+      // Tìm tài khoản phù hợp với email và mật khẩu
+      const account = accounts.find(
+        (acc) => acc.email === this.email && acc.password === this.password
+      );
+
+      if (account) {
+        // Kiểm tra vai trò người dùng
+        if (account.role !== this.role) {
+          alert("Vai trò người dùng không khớp!");
+          return; // Dừng lại nếu vai trò không khớp
+        }
+
+        // Lưu tài khoản đã đăng nhập vào localStorage
+        localStorage.setItem("loggedInAccount", JSON.stringify(account)); // Lưu tài khoản đã đăng nhập
+        localStorage.setItem("userRole", account.role); // Lưu vai trò người dùng
+
+        this.userRole = account.role; // Cập nhật vai trò người dùng trên UI
+
         alert("Đăng nhập thành công!");
 
-        // Lưu vai trò vào localStorage
-        localStorage.setItem("userRole", this.role);
-
-        // Gán giá trị cho userRole để hiển thị nút
-        this.userRole = this.role;
-
-        // Điều hướng dựa trên vai trò
-        if (this.role === "Độc giả") {
+        // Điều hướng theo vai trò người dùng
+        if (account.role === "Độc giả") {
           router.push("/docgia");
-        } else if (this.role === "Thủ thư") {
-          router.push("/admin");
-        } else if (this.role === "Quản trị viên") {
+        } else if (account.role === "Quản trị viên") {
           router.push("/admin");
         }
       } else {
-        alert("Email, mật khẩu hoặc vai trò không chính xác.");
+        alert("Email hoặc mật khẩu không đúng!");
       }
     },
+
     openForgotPasswordDialog() {
       this.forgotPasswordDialog = true;
     },
 
-    // Đóng dialog
     closeForgotPasswordDialog() {
       this.forgotPasswordDialog = false;
     },
 
-    // Gửi liên kết reset mật khẩu
     sendResetLink() {
       if (this.resetEmail) {
+        // Simulate sending the reset link (use actual logic as needed)
         console.log("Sending reset link to:", this.resetEmail);
-        this.closeForgotPasswordDialog(); // Đóng dialog sau khi gửi
+        this.closeForgotPasswordDialog();
         alert(
           "Liên kết khôi phục mật khẩu đã được gửi. Vui lòng kiểm tra email của bạn."
         );
-        this.$router.push("/Resetpass")
+        this.$router.push("/Resetpass");
       } else {
         alert("Vui lòng nhập email hợp lệ.");
       }
-      
     },
 
     redirectToSignIn() {
@@ -264,4 +246,3 @@ img {
   background: #03f8bf;
 }
 </style>
-

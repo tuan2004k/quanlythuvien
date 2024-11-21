@@ -1,5 +1,5 @@
 <template>
-  <v-sheet class="bg-deep pa-16" rounded>
+  <v-sheet class="" rounded>
     <v-card class="mx-auto px-10 py-12" max-width="500px">
       <div class="logo-container">
         <img src="/src/assets/logo/logologin.png" alt="logo" />
@@ -42,6 +42,7 @@
           type="password"
           clearable
         ></v-text-field>
+
         <v-select
           v-model="role"
           :items="roles"
@@ -80,8 +81,8 @@
     </v-card>
   </v-sheet>
 </template>
-  
-  <script>
+
+<script>
 import router from "@/router";
 
 export default {
@@ -94,27 +95,41 @@ export default {
       confirmPassword: "",
       role: "",
       loading: false,
-      roles: ["Độc giả", "Thủ thư", "Quản trị viên"],
+      roles: ["Độc giả", "Quản trị viên"],
     };
   },
 
   methods: {
     submitRegistrationForm() {
+      // Kiểm tra mật khẩu và xác nhận mật khẩu
       if (this.password !== this.confirmPassword) {
         alert("Mật khẩu và xác nhận mật khẩu không khớp.");
         return;
       }
 
-      const newUser = {
+      // Lấy danh sách tài khoản hiện tại
+      const accounts = JSON.parse(localStorage.getItem("accounts")) || [];
+
+      // Kiểm tra email đã tồn tại
+      if (accounts.some((account) => account.email === this.email)) {
+        alert("Email đã được sử dụng!");
+        return;
+      }
+
+      // Tạo tài khoản mới
+      const newAccount = {
         name: this.name,
         email: this.email,
-        password: this.password,
+        password: this.password,  // Cần mã hóa mật khẩu ở bước thực tế
         role: this.role,
       };
 
-      localStorage.setItem("newUser", JSON.stringify(newUser));
+      // Lưu tài khoản mới vào danh sách
+      accounts.push(newAccount);
+      localStorage.setItem("accounts", JSON.stringify(accounts));
+
       alert("Đăng ký thành công!");
-      router.push("/login");
+      router.push("/login");  // Chuyển hướng đến trang đăng nhập
     },
 
     redirectToLogin() {
@@ -141,7 +156,7 @@ export default {
   },
 };
 </script>
-  
+
 <style scoped>
 /* Căn giữa toàn bộ giao diện */
 .v-sheet {
@@ -178,5 +193,3 @@ img {
   background: #03f8bf;
 }
 </style>
-
-  
