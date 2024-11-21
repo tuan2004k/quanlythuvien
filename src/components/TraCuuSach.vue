@@ -32,7 +32,36 @@
       </v-col>
     </v-row>
 
-    <v-data-table :headers="headers" :items="filteredBooks" item-key="id" />
+    <!-- Danh sách sách dưới dạng các ô -->
+    <v-row>
+      <v-col
+        v-for="book in filteredBooks"
+        :key="book.id"
+        cols="12" sm="6" md="4" lg="3"
+      >
+        <v-card>
+          <v-img
+            :src="book.image"
+            alt="Book image"
+            height="200px"
+          ></v-img>   
+          <v-card-text>
+            <div><strong>Tên Sách:</strong> {{ book.title }}</div>
+            <div><strong>Tác Giả:</strong> {{ book.author }}</div>
+            <div><strong>Thể Loại:</strong> {{ book.category }}</div>
+            <div><strong>Năm Xuất Bản:</strong> {{ book.publicationYear }}</div>
+          </v-card-text>
+          <v-card-actions>
+            <v-btn @click="editBook(book)" color="yellow darken-1" small>
+              Sửa
+            </v-btn>
+            <v-btn @click="deleteBook(book)" color="red" small>
+              <v-icon>mdi-delete</v-icon>
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
@@ -47,16 +76,6 @@ export default defineComponent({
     const titleQuery = ref("");
     const authorQuery = ref("");
     const categoryQuery = ref("");
-
-    const headers = ref([
-      { text: "Tên Sách", value: "title", align: "center" },
-      { text: "Tác Giả", value: "author", align: "center" },
-      { text: "Thể Loại", value: "category", align: "center" },
-      { text: "Năm Xuất Bản", value: "publicationYear", align: "center" },
-      { text: "Tình Trạng", value: "status", align: "center" },
-      { text: "Loại Sách", value: "type", align: "center" },
-      { text: "Hành Động", value: "actions", sortable: false, align: "center" },
-    ]);
 
     const loadBooks = () => {
       const storedBooks = localStorage.getItem("books");
@@ -82,24 +101,56 @@ export default defineComponent({
       })
     );
 
+    const deleteBook = (book: any) => {
+      const index = books.value.findIndex((b) => b.id === book.id);
+      if (index !== -1) {
+        books.value.splice(index, 1);
+        localStorage.setItem("books", JSON.stringify(books.value));
+      }
+    };
+
+    const editBook = (book: any) => {
+      // Thực hiện hành động chỉnh sửa sách tại đây
+    };
+
     return {
       titleQuery,
       authorQuery,
       categoryQuery,
       books,
-      headers,
       filteredBooks,
+      deleteBook,
+      editBook,
     };
   },
 });
 </script>
 
 <style scoped>
-/* Không có CSS tùy chỉnh cho màu sắc */
 .v-text-field {
   background-color: rgb(254, 255, 255);
   margin-bottom: 20px;
   border-radius: 10px;
   color: black;
+}
+
+.v-card {
+  margin-bottom: 20px;
+}
+
+.v-card-title {
+  font-weight: bold;
+}
+
+.v-card-subtitle {
+  color: #777;
+}
+
+.v-card-text {
+  font-size: 14px;
+}
+
+.v-btn {
+  margin-right: 10px;
 }
 </style>

@@ -4,40 +4,37 @@
     <div class="header">
       <v-toolbar prominent class="full-width">
         <div>
-          <img src="/src/assets/logo/logologin.png" alt="" />
+          <img
+            src="/src/assets/logo/logologin.png"
+            alt="Logo"
+            style="cursor: pointer"
+            @click="navigateToHome"
+          />
         </div>
 
-        <v-toolbar-title>Quản Lý Thư Viện</v-toolbar-title>
-        <router-link
-          v-for="(item, index) in filteredItems"
-          :key="index"
-          :to="item.to"
-          class="menu-item"
-        >
-          <v-btn text>
-            <v-icon left>{{ item.icon }}</v-icon>
-            {{ item.title }}
-          </v-btn>
-        </router-link>
+        <v-toolbar-title style="cursor: pointer" @click="navigateToHome">
+          Quản Lý Thư Viện
+        </v-toolbar-title>
 
-        <!-- Sử dụng <router-link> thay vì @click -->
-        <router-link
+        <!-- Danh sách menu -->
+        <v-btn
           v-for="(item, index) in items"
           :key="index"
-          :to="item.to"
+          text
+          @click="navigateTo(item)"
           class="menu-item"
         >
-          <v-btn text>
-            <v-icon left>{{ item.icon }}</v-icon>
-            {{ item.title }}
-          </v-btn>
-        </router-link>
+          <v-icon left>{{ item.icon }}</v-icon>
+          {{ item.title }}
+        </v-btn>
 
         <v-btn icon @click="openLogoutDialog">
           <v-icon>mdi-account</v-icon>
         </v-btn>
       </v-toolbar>
     </div>
+
+    <!-- Dialog đăng xuất -->
     <v-dialog v-model="logoutDialog" max-width="400px">
       <v-card>
         <v-card-title class="headline">Xác nhận đăng xuất</v-card-title>
@@ -51,40 +48,65 @@
       </v-card>
     </v-dialog>
 
-    <!-- Nội dung động (hiển thị các component tùy theo route) -->
+    <!-- Component Trang Chủ -->
+    <Trangchu />
+
+    <!-- Nội dung động -->
     <div class="content">
       <router-view></router-view>
-      <!-- Đây là nơi các trang con sẽ được hiển thị -->
     </div>
   </div>
 </template>
 
 <script>
+import Trangchu from "@/components/Trangchu.vue"; // Đảm bảo bạn import đúng
+
 export default {
   data() {
     return {
       items: [
         {
+          title: "Trang chủ",
+          icon: "mdi-home",
+          to: "/home",
+        },
+        {
           title: "Tra cứu & Tìm kiếm",
           icon: "mdi-magnify",
           to: "/tra-cuu-tim-kiem",
         },
-
+        {
+          title: "Quản lý sách",
+          icon: "mdi-book",
+          to: "/Quanlysach",
+          requiresRole: "admin", // Chỉ admin mới có quyền truy cập
+        },
         { title: "Mượn sách", icon: "mdi-library", to: "/muonsach" },
         {
-          title: "Tài liệu điện tử",
-          icon: "mdi-file",
-          to: "/tai-lieu-dien-tu",
+          title: "Thông Tin Tài Khoản",
+          icon: "mdi-account-circle",
+          to: "/quanlytaikhoan",
         },
       ],
-      userRole: null,
-      logoutDialog: false, 
+      userRole: null, // Vai trò người dùng
+      logoutDialog: false,
     };
   },
   created() {
-    this.userRole = localStorage.getItem("userRole");
+    this.userRole = localStorage.getItem("userRole"); // Lấy role từ localStorage
   },
   methods: {
+    navigateTo(item) {
+      // Kiểm tra quyền truy cập
+      if (item.requiresRole && item.requiresRole !== this.userRole) {
+        alert("Bạn không có quyền truy cập vào trang này!"); // Hiển thị thông báo
+        return;
+      }
+      this.$router.push(item.to); // Điều hướng nếu đủ quyền
+    },
+    navigateToHome() {
+      this.$router.push("/docgia"); // Điều hướng về trang chủ
+    },
     openLogoutDialog() {
       this.logoutDialog = true;
     },
@@ -97,7 +119,6 @@ export default {
     },
   },
 };
-
 </script>
 
 <style scoped>

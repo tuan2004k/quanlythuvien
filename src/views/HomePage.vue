@@ -3,10 +3,17 @@
     <div class="header">
       <v-toolbar prominent class="full-width">
         <div>
-          <img src="/src/assets/logo/logologin.png" alt="" />
+          <img
+            src="/src/assets/logo/logologin.png"
+            alt=""
+            style="cursor: pointer"
+            @click="navigateToHome"
+          />
         </div>
 
-        <v-toolbar-title>Quản Lý Thư Viện</v-toolbar-title>
+        <v-toolbar-title style="cursor: pointer" @click="navigateToHome"
+          >Quản Lý Thư Viện</v-toolbar-title
+        >
         <router-link
           v-for="(item, index) in filteredItems"
           :key="index"
@@ -53,6 +60,7 @@
       <router-view></router-view>
     </div>
   </div>
+ 
 </template>
   
 <script>
@@ -60,13 +68,29 @@ export default {
   data() {
     return {
       items: [
-        { title: "Tra cứu & Tìm kiếm", icon: "mdi-magnify", to: "/tra-cuu-tim-kiem" },
+      {
+          title: "Trang chủ",
+          icon: "mdi-home",
+          to: "/home",
+        },
+        {
+          title: "Tra cứu & Tìm kiếm",
+          icon: "mdi-magnify",
+          to: "/tra-cuu-tim-kiem",
+        },
         { title: "Quản lý sách", icon: "mdi-book", to: "/Quanlysach" },
         { title: "Mượn sách", icon: "mdi-library", to: "/muonsach" },
-        { title: "Tài liệu điện tử", icon: "mdi-file", to: "/tai-lieu-dien-tu" },
+      
+        {
+          title: "Thông Tin Tài Khoản",
+          icon: "mdi-account-circle",
+          to: "/quanlytaikhoan",
+        },
       ],
       userRole: null,
-      logoutDialog: false, 
+      logoutDialog: false,
+
+      
     };
   },
   created() {
@@ -77,12 +101,14 @@ export default {
       this.logoutDialog = true;
     },
     logout() {
-
       localStorage.removeItem("loggedInAccount");
       localStorage.removeItem("userRole");
       this.logoutDialog = false;
-      this.$router.push("/login"); 
+      this.$router.push("/login");
       alert("Đăng xuất thành công!");
+    },
+    navigateToHome() {
+      this.$router.push("/");
     },
   },
 };

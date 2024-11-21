@@ -64,6 +64,11 @@ export default {
   data() {
     return {
       items: [
+      {
+          title: "Trang Chủ",
+          icon: "mdi-home",
+          to: "/home",
+        },
         {
           title: "Tra cứu & Tìm kiếm",
           icon: "mdi-magnify",
@@ -72,9 +77,9 @@ export default {
         { title: "Quản lý sách", icon: "mdi-book", to: "/Quanlysach" },
         { title: "Mượn sách", icon: "mdi-library", to: "/muonsach" },
         {
-          title: "Tài liệu điện tử",
-          icon: "mdi-file",
-          to: "/tai-lieu-dien-tu",
+          title: "Thông Tin Tài Khoản",
+          icon: "mdi-account-circle",
+          to: "/quanlytaikhoan",
         },
       ],
       userRole: null,
