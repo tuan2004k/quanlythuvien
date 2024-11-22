@@ -154,5 +154,91 @@ img {
   margin-top: 120px;
   padding: 20px;
 }
+/* Đảm bảo rằng thanh menu chiếm toàn bộ chiều rộng */
+.full-width {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+}
+
+/* Giảm kích thước logo và padding cho các thiết bị di động */
+img {
+  width: 40px;
+  margin: 16px;
+}
+
+/* Căn chỉnh menu items */
+.menu-item {
+  margin-left: 16px;
+}
+
+/* Điều chỉnh lại khoảng cách cho phần content */
+.content {
+  margin-top: 120px;
+  padding: 20px;
+}
+
+/* Media Queries cho các thiết bị di động */
+@media (max-width: 600px) {
+  /* Giảm kích thước logo và khoảng cách trong menu */
+  img {
+    width: 35px;
+    margin: 16px;
+  }
+
+  /* Điều chỉnh thanh menu để không bị tràn trên các màn hình nhỏ */
+  .header {
+    padding: 8px 16px;
+  }
+
+  /* Giảm kích thước font title của toolbar */
+  .v-toolbar-title {
+    font-size: 1.2rem;
+  }
+
+  /* Cải thiện khoảng cách cho content */
+  .content {
+    margin-top: 80px;
+    padding: 16px;
+  }
+
+  /* Tắt một số phần tử menu để giảm sự chật chội */
+  .menu-item {
+    font-size: 0.9rem;
+  }
+
+  /* Giảm kích thước nút và icon */
+  .v-btn {
+    padding: 8px;
+  }
+
+  .v-icon {
+    font-size: 1.1rem;
+  }
+}
+
+/* Media Queries cho các thiết bị có kích thước trung bình (tablet) */
+@media (max-width: 1024px) {
+  .header {
+    padding: 12px 24px;
+  }
+
+  .v-toolbar-title {
+    font-size: 1.5rem;
+  }
+
+  .content {
+    margin-top: 100px;
+    padding: 20px;
+  }
+
+  .menu-item {
+    font-size: 1rem;
+  }
+}
+
 </style>
   

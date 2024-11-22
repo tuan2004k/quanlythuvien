@@ -44,9 +44,11 @@ a,
     background: #ccc9c9; 
     display: block; 
     
+    
   }
 
   #app {
     padding: 1rem; 
+    width: 100%;
   }
 }
