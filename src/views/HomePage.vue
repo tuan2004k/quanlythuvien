@@ -39,7 +39,7 @@
         </router-link>
 
         <v-btn icon @click="openLogoutDialog">
-          <v-icon>mdi-account</v-icon>
+          <v-icon>mdi-export</v-icon>
         </v-btn>
       </v-toolbar>
     </div>
@@ -76,7 +76,7 @@ export default {
         {
           title: "Tra cứu & Tìm kiếm",
           icon: "mdi-magnify",
-          to: "/tra-cuu-tim-kiem",
+          to: "/tracuutimkiem",
         },
         { title: "Quản lý sách", icon: "mdi-book", to: "/Quanlysach" },
         { title: "Mượn sách", icon: "mdi-library", to: "/muonsach" },
@@ -108,7 +108,7 @@ export default {
       alert("Đăng xuất thành công!");
     },
     navigateToHome() {
-      this.$router.push("/");
+      this.$router.push("/docgia");
     },
   },
 };

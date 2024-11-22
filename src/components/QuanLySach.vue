@@ -25,6 +25,7 @@
             height="200px"
             class="book-image"
           />
+          
 
           <v-card-text>
             <div><strong>Tên Sách:</strong> {{ book.title }}</div>

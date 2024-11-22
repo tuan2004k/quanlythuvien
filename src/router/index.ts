@@ -18,7 +18,7 @@ const router = createRouter({
       component: HomePage,
       children: [
         {
-          path: 'tra-cuu-tim-kiem',
+          path: 'tracuutimkiem',
           component: TraCuuSach,
         },
         {

@@ -53,7 +53,7 @@
           class="sign-in-btn"
           @click="redirectToSignIn"
         >
-          Sign In
+          Sign Up
         </v-btn>
 
         <div class="forgot-password-link">

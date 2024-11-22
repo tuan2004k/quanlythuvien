@@ -46,7 +46,6 @@
           { label: "Email", value: userAccount.email || "Không có email" },
         ];
   
-        // Nếu userAccount có ảnh avatar, gán vào avatarUrl
         this.avatarUrl =
           userAccount.avatar || "/src/assets/avarta.jpeg"; // Avatar mặc định
       }

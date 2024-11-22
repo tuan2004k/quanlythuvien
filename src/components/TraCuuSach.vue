@@ -52,12 +52,7 @@
             <div><strong>Năm Xuất Bản:</strong> {{ book.publicationYear }}</div>
           </v-card-text>
           <v-card-actions>
-            <v-btn @click="editBook(book)" color="yellow darken-1" small>
-              Sửa
-            </v-btn>
-            <v-btn @click="deleteBook(book)" color="red" small>
-              <v-icon>mdi-delete</v-icon>
-            </v-btn>
+            
           </v-card-actions>
         </v-card>
       </v-col>
