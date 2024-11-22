@@ -75,7 +75,7 @@ const router = createRouter({
     {
       path: '/Resetpass',
       name: 'Resetpass',
-      component: () => import('../components/Resetpass.vue'),
+      component: () => import('../components/ResetPass.vue'),
     },
     {
       path: '/Quanlysach',
