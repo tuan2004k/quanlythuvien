@@ -129,7 +129,7 @@ export default defineComponent({
     const statusOptions = [
       { text: "Còn Sách", value: "Còn Sách" },
       { text: "Đã Mượn", value: "Đã Mượn" },
-      { text: "Đã Hư", value: "Bị Hỏng" },
+      { text: "Đã Hư", value: "Đã Hư" },
     ];
     const typeOptions = [
       { text: "Mới", value: "new" },

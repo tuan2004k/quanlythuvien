@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '../views/DocGia.vue';
-import ResetPass from '../components/ResetPass.vue';
+import ResetPass from '@/components/ResetPass.vue';
 import QuanLySach from '@/components/QuanLySach.vue';
 import TraCuuSach from '@/components/TraCuuSach.vue';
 import HomePage from '../views/Admin.vue';

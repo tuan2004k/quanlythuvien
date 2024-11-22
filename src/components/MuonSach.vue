@@ -120,6 +120,7 @@ import { defineComponent, ref, computed, onMounted } from "vue";
 export default defineComponent({
   name: "BorrowReturnBooks",
   setup() {
+    
     // Lưu trữ danh sách sách trong `localStorage`
     const books = ref<any[]>([]);
 
