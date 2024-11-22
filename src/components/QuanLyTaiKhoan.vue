@@ -39,17 +39,19 @@
       };
     },
     created() {
-      const userAccount = JSON.parse(localStorage.getItem("loggedInAccount"));
-      if (userAccount) {
-        this.accountInfo = [
-          { label: "Tên", value: userAccount.name || "Không có tên" },
-          { label: "Email", value: userAccount.email || "Không có email" },
-        ];
-  
-        this.avatarUrl =
-          userAccount.avatar || "/src/assets/avarta.jpeg"; // Avatar mặc định
-      }
-    },
+  const userAccount = JSON.parse(localStorage.getItem("loggedInAccount"));
+  if (userAccount) {
+    this.accountInfo = [
+      { label: "Tên", value: userAccount.name || "Không có tên" },
+      { label: "Email", value: userAccount.email || "Không có email" },
+      { label: "ID Người dùng", value: userAccount.id || "Không có ID" }, // Thêm ID người dùng
+    ];
+
+    this.avatarUrl =
+      userAccount.avatar || "/src/assets/avarta.jpeg"; // Avatar mặc định
+  }
+},
+
   };
   </script>
   

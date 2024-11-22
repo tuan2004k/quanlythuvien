@@ -183,10 +183,10 @@ export default defineComponent({
     };
 
     const editBook = (book: any) => {
-      currentBook.value = { ...book };
-      isEditMode.value = true;
-      dialog.value = true;
-    };
+  currentBook.value = { ...book }; // Gán lại toàn bộ thông tin sách, bao gồm cả ID
+  isEditMode.value = true;
+  dialog.value = true;
+};
 
     const deleteBook = (book: any) => {
       const index = books.findIndex((b) => b.id === book.id);
@@ -200,32 +200,27 @@ export default defineComponent({
     };
 
     const saveBook = () => {
-      if (currentBook.value.image) {
-        currentBook.value.image = URL.createObjectURL(currentBook.value.image);
-      } else {
-        currentBook.value.image = "/default-image.jpg"; // Gán ảnh mặc định nếu không có ảnh
-      }
+  if (isEditMode.value) {
+    const bookIndex = books.findIndex(
+      (book) => book.id === currentBook.value.id
+    );
+    if (bookIndex !== -1) {
+      books[bookIndex] = { ...currentBook.value };
+    }
+    snackbarMessage.value = "Cập nhật sách thành công!";
+  } else {
+    books.push({
+      ...currentBook.value,
+      id: Date.now(),
+    });
+    snackbarMessage.value = "Thêm sách thành công!";
+  }
 
-      if (isEditMode.value) {
-        const bookIndex = books.findIndex(
-          (book) => book.id === currentBook.value.id
-        );
-        if (bookIndex !== -1) {
-          books[bookIndex] = { ...currentBook.value };
-        }
-        snackbarMessage.value = "Cập nhật sách thành công!";
-      } else {
-        books.push({
-          ...currentBook.value,
-          id: Date.now(),
-        });
-        snackbarMessage.value = "Thêm sách thành công!";
-      }
+  localStorage.setItem("books", JSON.stringify(books));
+  resetForm();
+  snackbarVisible.value = true;
+};
 
-      localStorage.setItem("books", JSON.stringify(books));
-      resetForm();
-      snackbarVisible.value = true;
-    };
 
     const resetForm = () => {
       currentBook.value = {

@@ -4,10 +4,11 @@
     <div class="header">
       <v-toolbar prominent class="full-width">
         <div>
-          <img src="/src/assets/logo/logologin.png" alt="" />
+          <img src="/src/assets/logo/logologin.png" alt="" style="cursor: pointer"
+          @click="navigateToHome" />
         </div>
 
-        <v-toolbar-title>Quản Lý Thư Viện</v-toolbar-title>
+        <v-toolbar-title style="cursor: pointer" @click="navigateToHome">Quản Lý Thư Viện</v-toolbar-title>
         <router-link
           v-for="(item, index) in filteredItems"
           :key="index"
@@ -105,6 +106,9 @@ export default {
       this.logoutDialog = false;
       this.$router.push("/login"); // Chuyển hướng về trang đăng nhập
       alert("Đăng xuất thành công!");
+    },
+    navigateToHome() {
+      this.$router.push("/docgia"); // Điều hướng về trang chủ
     },
   },
 };

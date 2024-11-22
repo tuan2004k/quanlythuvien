@@ -32,10 +32,21 @@
           :to="item.to"
           class="menu-item"
         >
+        
           <v-btn text>
             <v-icon left>{{ item.icon }}</v-icon>
             {{ item.title }}
           </v-btn>
+          <v-btn
+          v-for="(item, index) in items"
+          :key="index"
+          text
+          @click="navigateTo(item)"
+          class="menu-item"
+        >
+          <v-icon left>{{ item.icon }}</v-icon>
+          {{ item.title }}
+        </v-btn>
         </router-link>
 
         <v-btn icon @click="openLogoutDialog">
@@ -78,7 +89,7 @@ export default {
           icon: "mdi-magnify",
           to: "/tracuutimkiem",
         },
-        { title: "Quản lý sách", icon: "mdi-book", to: "/Quanlysach" },
+        { title: "Quản lý sách", icon: "mdi-book", to: "/Quanlysach", requiresRole: "docgia",  },
         { title: "Mượn sách", icon: "mdi-library", to: "/muonsach" },
       
         {
@@ -97,6 +108,14 @@ export default {
     this.userRole = localStorage.getItem("userRole");
   },
   methods: {
+    navigateTo(item) {
+      // Kiểm tra quyền truy cập
+      if (item.requiresRole && item.requiresRole !== this.userRole) {
+        alert("Bạn không có quyền truy cập vào trang này!"); // Hiển thị thông báo
+        return;
+      }
+      this.$router.push(item.to); // Điều hướng nếu đủ quyền
+    },
     openLogoutDialog() {
       this.logoutDialog = true;
     },

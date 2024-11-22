@@ -116,11 +116,15 @@ export default {
         return;
       }
 
+      // Tạo ID duy nhất cho người dùng
+      const userId = Date.now().toString(); // Tạo ID bằng thời gian hiện tại (hoặc có thể dùng UUID)
+
       // Tạo tài khoản mới
       const newAccount = {
+        id: userId, // Thêm ID người dùng
         name: this.name,
         email: this.email,
-        password: this.password,  // Cần mã hóa mật khẩu ở bước thực tế
+        password: this.password, // Cần mã hóa mật khẩu ở bước thực tế
         role: this.role,
       };
 
@@ -129,7 +133,7 @@ export default {
       localStorage.setItem("accounts", JSON.stringify(accounts));
 
       alert("Đăng ký thành công!");
-      router.push("/login");  // Chuyển hướng đến trang đăng nhập
+      router.push("/login"); // Chuyển hướng đến trang đăng nhập
     },
 
     redirectToLogin() {

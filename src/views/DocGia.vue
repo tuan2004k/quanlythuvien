@@ -79,7 +79,7 @@ export default {
           title: "Quản lý sách",
           icon: "mdi-book",
           to: "/Quanlysach",
-          requiresRole: "admin", // Chỉ admin mới có quyền truy cập
+          requiresRole: "docgia", // Chỉ admin mới có quyền truy cập
         },
         { title: "Mượn sách", icon: "mdi-library", to: "/muonsach" },
         {

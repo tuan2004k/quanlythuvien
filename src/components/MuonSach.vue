@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-row style="te">
-      <h1>Quản Lý Mượn trả Sách</h1>
+      <h1>Mượn Sách</h1>
     </v-row>
 
     <!-- Danh sách sách có thể mượn hoặc trả -->
