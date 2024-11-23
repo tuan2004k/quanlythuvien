@@ -25,8 +25,6 @@
             height="200px"
             class="book-image"
           />
-          
-
           <v-card-text>
             <div><strong>Tên Sách:</strong> {{ book.title }}</div>
             <div><strong>Tác Giả:</strong> {{ book.author }}</div>
@@ -35,7 +33,7 @@
             <div><strong>Tình Trạng:</strong> {{ book.status }}</div>
           </v-card-text>
           <v-card-actions>
-            <v-btn @click="editBook(book)" color="yellow darken-1" small>
+            <v-btn @click="editBook(book)" color="blue" small>
               Sửa
             </v-btn>
             <v-btn @click="deleteBook(book)" color="red" small>
@@ -59,7 +57,7 @@
         item-value="value"
         outlined
         dense
-        style="background-color: #1867c0"
+        style="background-color: #1867C0; "
         class="mb-4 filter-combobox"
       ></v-select>
     </v-row>
@@ -271,7 +269,7 @@ export default defineComponent({
   position: absolute;
   top: 16px;
   right: 16px;
-  width: 200px;
+  width: 100px;
   z-index: 10;
 }
 
