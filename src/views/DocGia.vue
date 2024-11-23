@@ -75,7 +75,8 @@ export default {
           icon: "mdi-book",
           to: "/Quanlysach",
           requiresRole: "docgia", 
-        { title: "Mượn sách", icon: "mdi-library", to: "/muonsach" },
+          title: "Mượn sách", icon: "mdi-library", to: "/muonsach",
+         },
         {
           title: "Thông Tin Tài Khoản",
           icon: "mdi-account-circle",
