@@ -21,10 +21,21 @@
             <div><strong>Tác Giả:</strong> {{ book.author }}</div>
             <div><strong>Thể Loại:</strong> {{ book.category }}</div>
             <div><strong>Năm Xuất Bản:</strong> {{ book.publicationYear }}</div>
+
+            <!-- Hiển thị khi sách đã được mượn -->
             <div v-if="book.isBorrowed">
               <div style="color: red">Đã mượn</div>
               <div><strong>Thời gian mượn:</strong> {{ book.borrowTime }}</div>
               <div><strong>Ngày trả:</strong> {{ book.returnDate }}</div>
+            </div>
+
+            <!-- Hiển thị khi sách đã được trả -->
+            <div v-else-if="book.returnStatus">
+              <div style="color: green">Đã trả</div>
+              <div><strong>Thời gian trả:</strong> {{ book.returnTime }}</div>
+              <div>
+                <strong>Tình trạng sách:</strong> {{ book.returnCondition }}
+              </div>
             </div>
           </v-card-text>
           <v-card-actions>
@@ -70,7 +81,6 @@
               :min="today"
               required
             ></v-text-field>
-         
           </v-form>
         </v-card-text>
         <v-card-actions>
@@ -97,7 +107,6 @@
               label="Tình trạng sách"
               required
             ></v-select>
-
           </v-form>
         </v-card-text>
         <v-card-actions>
@@ -120,7 +129,6 @@ import { defineComponent, ref, computed, onMounted } from "vue";
 export default defineComponent({
   name: "BorrowReturnBooks",
   setup() {
-    
     // Lưu trữ danh sách sách trong `localStorage`
     const books = ref<any[]>([]);
 
@@ -193,31 +201,43 @@ export default defineComponent({
     // Xử lý khi nhấn nút mượn trong form đăng ký
     const submitBorrowRequest = () => {
       if (currentBook.value) {
-        currentBook.value.isBorrowed = true; // Cập nhật trạng thái đã mượn
-        currentBook.value.borrowTime = new Date().toLocaleString(); // Lưu thời gian mượn
-        currentBook.value.returnDate = returnDate.value; // Lưu ngày trả
-        currentBook.value.returnTime = ""; // Khởi tạo thời gian trả
-        saveBooks(); // Lưu danh sách sách đã cập nhật vào localStorage
+        const borrowDateObj = new Date(borrowDate.value);
+        const returnDateObj = new Date(borrowDateObj);
+        returnDateObj.setDate(borrowDateObj.getDate() + 7); // Thêm 7 ngày vào ngày mượn
+
+        currentBook.value.isBorrowed = true; // Đánh dấu sách đã được mượn
+        currentBook.value.borrowTime = borrowDate.value; // Lưu ngày mượn
+        currentBook.value.returnDate = returnDateObj
+          .toISOString()
+          .substr(0, 10); // Lưu ngày trả tự động
+
+        saveBooks(); // Cập nhật danh sách vào localStorage
+
         alert(
-          `Đã mượn sách: ${currentBook.value.title}, Tên người mượn: ${borrowerName.value}, Ngày mượn: ${borrowDate.value}, Ngày trả dự kiến: ${returnDate.value}`
+          `Đã mượn sách: ${currentBook.value.title}, Ngày mượn: ${borrowDate.value}, Ngày trả: ${currentBook.value.returnDate}`
         );
-        isDialogVisible.value = false;
+
+        isDialogVisible.value = false; // Đóng dialog
       }
     };
 
     // Xử lý khi nhấn nút trả sách trong form trả sách
     const submitReturnRequest = () => {
-      if (currentBook.value) {
-        currentBook.value.isBorrowed = false; // Cập nhật trạng thái sách đã trả
-        currentBook.value.returnCondition = returnCondition.value; // Lưu tình trạng sách
-        currentBook.value.returnTime = returnTime.value; // Lưu thời gian trả
-        saveBooks(); // Lưu danh sách sách đã cập nhật vào localStorage
-        alert(
-          `Đã trả sách: ${currentBook.value.title}, Tình trạng: ${returnCondition.value}, Thời gian trả: ${returnTime.value}`
-        );
-        isReturnDialogVisible.value = false;
-      }
-    };
+  if (currentBook.value) {
+    currentBook.value.isBorrowed = false; // Đánh dấu sách không còn được mượn
+    currentBook.value.returnCondition = returnCondition.value; // Lưu tình trạng sách
+    currentBook.value.returnTime = new Date().toISOString().substr(0, 10); // Lưu thời gian trả
+    currentBook.value.returnStatus = true; // Đặt trạng thái "đã trả"
+
+    saveBooks(); // Lưu danh sách sách vào localStorage
+
+    alert(
+      `Đã trả sách: ${currentBook.value.title}, Tình trạng: ${returnCondition.value}, Thời gian trả: ${currentBook.value.returnTime}`
+    );
+
+    isReturnDialogVisible.value = false; // Đóng dialog trả sách
+  }
+};
 
     // Lưu lại danh sách sách vào localStorage
     const saveBooks = () => {

@@ -89,7 +89,7 @@ export default {
           icon: "mdi-magnify",
           to: "/tracuutimkiem",
         },
-        { title: "Quản lý sách", icon: "mdi-book", to: "/Quanlysach", requiresRole: "docgia",  },
+        { title: "Quản lý sách", icon: "mdi-book", to: "/Quanlysach", },
         { title: "Mượn sách", icon: "mdi-library", to: "/muonsach" },
       
         {
@@ -109,12 +109,11 @@ export default {
   },
   methods: {
     navigateTo(item) {
-      // Kiểm tra quyền truy cập
       if (item.requiresRole && item.requiresRole !== this.userRole) {
-        alert("Bạn không có quyền truy cập vào trang này!"); // Hiển thị thông báo
+        alert("Bạn không có quyền truy cập vào trang này!"); 
         return;
       }
-      this.$router.push(item.to); // Điều hướng nếu đủ quyền
+      this.$router.push(item.to); 
     },
     openLogoutDialog() {
       this.logoutDialog = true;

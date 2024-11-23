@@ -85,9 +85,6 @@
       </v-card>
     </v-dialog>
   </v-sheet>
-
-  <!-- Role-based buttons -->
-
 </template>
 
 <script>
@@ -108,7 +105,6 @@ export default {
     };
   },
   mounted() {
-    // Retrieve user role from localStorage if available
     const storedRole = localStorage.getItem("userRole");
     if (storedRole) {
       this.userRole = storedRole;
@@ -116,30 +112,24 @@ export default {
   },
   methods: {
     submitForm() {
-      // Lấy tài khoản đã lưu trong localStorage
       const accounts = JSON.parse(localStorage.getItem("accounts")) || [];
-
-      // Tìm tài khoản phù hợp với email và mật khẩu
       const account = accounts.find(
         (acc) => acc.email === this.email && acc.password === this.password
       );
 
       if (account) {
-        // Kiểm tra vai trò người dùng
         if (account.role !== this.role) {
           alert("Vai trò người dùng không khớp!");
-          return; // Dừng lại nếu vai trò không khớp
+          return;
         }
 
-        // Lưu tài khoản đã đăng nhập vào localStorage
-        localStorage.setItem("loggedInAccount", JSON.stringify(account)); // Lưu tài khoản đã đăng nhập
-        localStorage.setItem("userRole", account.role); // Lưu vai trò người dùng
+        localStorage.setItem("loggedInAccount", JSON.stringify(account)); 
+        localStorage.setItem("userRole", account.role); 
 
-        this.userRole = account.role; // Cập nhật vai trò người dùng trên UI
+        this.userRole = account.role; 
 
         alert("Đăng nhập thành công!");
 
-        // Điều hướng theo vai trò người dùng
         if (account.role === "Độc giả") {
           router.push("/docgia");
         } else if (account.role === "Quản trị viên") {
@@ -160,7 +150,6 @@ export default {
 
     sendResetLink() {
       if (this.resetEmail) {
-        // Simulate sending the reset link (use actual logic as needed)
         console.log("Sending reset link to:", this.resetEmail);
         this.closeForgotPasswordDialog();
         alert(

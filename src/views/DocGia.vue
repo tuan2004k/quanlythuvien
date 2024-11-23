@@ -1,38 +1,42 @@
 <template>
-  <div>
-    <!-- Thanh menu -->
-    <div class="header">
-      <v-toolbar prominent class="full-width">
-        <div>
-          <img
-            src="/src/assets/logo/logologin.png"
-            alt="Logo"
-            style="cursor: pointer"
-            @click="navigateToHome"
-          />
-        </div>
+  <v-app>
+    <v-app-bar app>
+      <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+      <v-toolbar-title style="cursor: pointer" @click="navigateToHome">
+        Quản Lý Thư Viện
+      </v-toolbar-title>
+      <v-spacer></v-spacer>
 
-        <v-toolbar-title style="cursor: pointer" @click="navigateToHome">
-          Quản Lý Thư Viện
-        </v-toolbar-title>
+      <v-btn icon @click="openLogoutDialog">
+        <v-icon>mdi-export</v-icon>
+      </v-btn>
+    </v-app-bar>
 
-        <!-- Danh sách menu -->
-        <v-btn
-          v-for="(item, index) in items"
-          :key="index"
-          text
-          @click="navigateTo(item)"
-          class="menu-item"
-        >
-          <v-icon left>{{ item.icon }}</v-icon>
-          {{ item.title }}
-        </v-btn>
+    <v-navigation-drawer v-model="drawer" app>
+      <v-list>
+        <v-list-item-group>
+          <v-list-item
+            v-for="(item, index) in items"
+            :key="index"
+            class="menu-item"
+            @click="navigateTo(item)"
+            style="padding: 25px;"
+          >
+            <v-list-item-icon>
+              <v-icon>{{ item.icon }}</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>{{ item.title }}</v-list-item-content>
+          </v-list-item>
+        </v-list-item-group>
+      </v-list>
+    </v-navigation-drawer>
 
-        <v-btn icon @click="openLogoutDialog">
-          <v-icon>mdi-export</v-icon>
-        </v-btn>
-      </v-toolbar>
-    </div>
+    <!-- Nội dung chính -->
+    <v-main>
+      <div class="content">
+        <router-view></router-view>
+      </div>
+    </v-main>
 
     <!-- Dialog đăng xuất -->
     <v-dialog v-model="logoutDialog" max-width="400px">
@@ -47,23 +51,14 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-
-    <!-- Component Trang Chủ -->
-    <Trangchu />
-
-    <!-- Nội dung động -->
-    <div class="content">
-      <router-view></router-view>
-    </div>
-  </div>
+  </v-app>
 </template>
 
 <script>
-import Trangchu from "@/components/Trangchu.vue"; // Đảm bảo bạn import đúng
-
 export default {
   data() {
     return {
+      drawer: false,  
       items: [
         {
           title: "Trang chủ",
@@ -79,8 +74,7 @@ export default {
           title: "Quản lý sách",
           icon: "mdi-book",
           to: "/Quanlysach",
-          requiresRole: "docgia", // Chỉ admin mới có quyền truy cập
-        },
+          requiresRole: "docgia", 
         { title: "Mượn sách", icon: "mdi-library", to: "/muonsach" },
         {
           title: "Thông Tin Tài Khoản",
@@ -88,24 +82,24 @@ export default {
           to: "/quanlytaikhoan",
         },
       ],
-      userRole: null, // Vai trò người dùng
+      userRole: null, 
       logoutDialog: false,
     };
   },
   created() {
-    this.userRole = localStorage.getItem("userRole"); // Lấy role từ localStorage
+    this.userRole = localStorage.getItem("userRole");
   },
   methods: {
     navigateTo(item) {
       // Kiểm tra quyền truy cập
       if (item.requiresRole && item.requiresRole !== this.userRole) {
-        alert("Bạn không có quyền truy cập vào trang này!"); // Hiển thị thông báo
+        alert("Bạn không có quyền truy cập vào trang này!"); 
         return;
       }
-      this.$router.push(item.to); // Điều hướng nếu đủ quyền
+      this.$router.push(item.to); 
     },
     navigateToHome() {
-      this.$router.push("/docgia"); // Điều hướng về trang chủ
+      this.$router.push("/home"); 
     },
     openLogoutDialog() {
       this.logoutDialog = true;
@@ -122,42 +116,13 @@ export default {
 </script>
 
 <style scoped>
-.full-width {
-  width: 100%;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1000;
-}
-
-.header {
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  padding-top: 64px;
-}
-
-.search-bar {
-  width: 400px;
-  margin: 0 auto;
-  border-radius: 50px;
-  margin-right: 50px;
-}
-
 .menu-item {
   margin-left: 16px;
 }
 
-img {
-  width: 50px;
-  margin: 30px;
-}
-
 .content {
-  margin-top: 120px;
+  margin-top: 80px;
   padding: 20px;
+  padding-bottom: 50px;
 }
 </style>
